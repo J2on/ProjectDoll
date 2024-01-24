@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/PlayerController.h"
-#include "InteractableActor.h"
+#include "InventoryClass.h"
 #include "PlayerDollController.generated.h"
 
 /**
@@ -17,8 +17,27 @@ class PROJECTDOLL_API APlayerDollController : public APlayerController
 public:
 	APlayerDollController();
 	
-	// Inventory 구현	
-	TArray<int> Inventory;
-	// 지금 들고있는 item의 index
-	int CurrentInventoryIndex;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Inventory")
+    int32 CurrentInventorySlot;
+
+	// Action Mapping을 Binding
+	virtual void SetupInputComponent() override;
+	
+	// 1번 슬롯 선택 함수
+	void SelectInventorySlot1();
+	// 2번 슬롯 선택 함수
+	void SelectInventorySlot2();
+	// 3번 슬롯 선택 함수
+	void SelectInventorySlot3();
+	// 4번 슬롯 선택 함수
+	void SelectInventorySlot4();
+	// 5번 슬롯 선택 함수
+	void SelectInventorySlot5();
+
+	void ChangeHandItem(int32 SlotNumber);
+	
+	// 플레이어의 인벤토리
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Inventory")
+	UInventoryClass* PlayerInventory;
+	
 };

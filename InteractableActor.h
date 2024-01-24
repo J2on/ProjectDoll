@@ -7,6 +7,7 @@
 #include "Kismet/GameplayStatics.h"
 #include "PlayerDoll.h"
 #include "PlayerDollController.h"
+#include "InventoryClass.h"
 #include "Components/TextRenderComponent.h"
 #include "InteractableActor.generated.h"
 
@@ -25,10 +26,18 @@ public:
 	// Interaction 시에 나타날 수 있는 메시지,
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Interactable")
 	FText InteractionMessage;
-
+	
+	// Root가 될 Capsule Component
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Interactable")
+	class UCapsuleComponent* CapsuleComponent;
+	
 	// 출력할 TEXT
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Interactable")
 	UTextRenderComponent* TextComponent;
+
+	//MeshComponent
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Interactable")
+	UStaticMeshComponent* MeshComponent;
 
 	// 이 Actor가 Player의 소유에 있는지
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Interactable")
@@ -51,12 +60,35 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
+	virtual void Interact();
+	
+	// Item마다 고유 번호 부여
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Interactable")
+	int32 ItemNum;
+	
+
 protected:
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Interactable")
 	APlayerController* PlayerController;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Interactable")
+	APlayerDollController* PlayerDollController;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Interactable")
 	APawn* PlayerPawn;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Interactable")
 	APlayerDoll* PlayerDoll;
+	
 	// X버튼이 얼마나 오래 눌렸는지 기록하는 변수
-	float InteractionButtonPressTime;
-	// Text가 항상 플레이어를 바라보도록 플레이어를 향하는 Vector
-	FVector ToPlayer;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Interactable")
+	float PickUpButtonPressTime;
+
+	// C버튼 딜레이를 확인
+	float InteractButtonPressTime;
+
+	// 플레이어의 view 안에 있는지 확인
+	bool IsTextVisible;
+
+
 };

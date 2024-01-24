@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/GameModeBase.h"
 #include "Blueprint/UserWidget.h"
+#include "Components/TextBlock.h"
 #include "ProjectDollGameModeBase.generated.h"
 
 /**
@@ -18,10 +19,16 @@ class PROJECTDOLL_API AProjectDollGameModeBase : public AGameModeBase
 public :
 	virtual void StartPlay() override;
 
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="ProjectDoll")
-	UUserWidget* CurrentWidget;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="ProjectDoll")
+	UUserWidget* PlayerWidget;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="ProjectDoll")
+	UUserWidget* MapWidget;
 	
 	//TSubclassOf<Type> <- Type을 제한하는 구문
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="ProjectDoll")
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="UI")
 	TSubclassOf<UUserWidget> HUDWidget;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="UI")
+	TSubclassOf<UUserWidget> HUDMapWidget;
 };

@@ -7,6 +7,9 @@
 #include "Camera/CameraComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Components/StaticMeshComponent.h"
+#include "Components/CapsuleComponent.h"
+#include "Components/AudioComponent.h"
+#include "Sound/SoundWave.h"
 #include "PlayerDoll.generated.h"
 
 
@@ -16,7 +19,8 @@ enum EPlayerState
 	STOP,
 	WALK,
 	RUN,
-	BREATH_HOLD
+	BREATH_HOLD,
+	DEATH
 };
 
 UCLASS()
@@ -28,20 +32,37 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 	
-	UPROPERTY(EditAnywhere)
-	USpringArmComponent* DefaultCameraSpringArm;
-	UCameraComponent* DefaultCamera;
+
+
+	//UPROPERTY(EditAnywhere)
+	//UCapsuleComponent* DefaultCapsuleComponent;
 	
 public:
 	// Sets default values for this character's properties
 	APlayerDoll();
 
+	// Player State
+	EPlayerState PlayerState;
+	EPlayerState PrePlayerState;
+	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
+	// Walk Sound Audio Component
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Audio")
+	UAudioComponent* WalkSoundComponent;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Audio")
+	UAudioComponent* RunSoundComponent;
+	
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Camera")
+    UCameraComponent* DefaultCamera;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Camera")
+    USpringArmComponent* DefaultCameraSpringArm;
+	
+	
 	// Axis Mapping 처리 함수
 	UFUNCTION()
 	void MoveForward(float AxisValue);
@@ -66,17 +87,25 @@ public:
 	UFUNCTION()
 	void WalkRightButtonUp();
 	UFUNCTION()
+	void LieDownButtonDown();
+	UFUNCTION()
+	void LieDownButtonUp();
+	UFUNCTION()
 	void RunButtonDown();
 	UFUNCTION()
 	void RunButtonUp();
 	UFUNCTION()
-	void BreathHoldButtonUp();
-	UFUNCTION()
 	void BreathHoldButtonDown();
+	UFUNCTION()
+	void BreathHoldButtonUp();
 	UFUNCTION()
 	void InteractionButtonDown();
 	UFUNCTION()
 	void InteractionButtonUp();
+	UFUNCTION()
+	void PickUpButtonDown();
+	UFUNCTION()
+	void PickUpButtonUp();
 	
 	// 기타 함수
 	UFUNCTION()
@@ -85,11 +114,13 @@ public:
 	void BodyHeaving();
 	UFUNCTION()
 	void SetPlayerState();
+	UFUNCTION()
+	void PlayWalkSound();
 
 private:
 	bool IsMouseRightButtonClick;
 	float ZoomScale;
-	EPlayerState PlayerState;
+	
 
 	// Tick함수에서 1초 단위 수행에 사용
 	float TimeUnit;
@@ -112,7 +143,20 @@ public:
 	// 타 Object와의 Interaction 여부 판단을 위해 사용됨.
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "PlayerDoll")
 	float IsInteractionButtonDown;
+	// Item Pick Up 버튼 클릭 여부를 판단하기 위해 사용됨.
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "PlayerDoll")
+	float IsPickUpButtonDown;
 	// 임시 팔로 사용할 Sphere
 	UPROPERTY(VisibleAnywhere, Category = "Temp")
 	UStaticMeshComponent* PlayerHandSocket;
+
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "PlayerDoll")
+	bool IsDead;
+
+	bool HasKey;
+
+	// 타 클래스에서 카메라가 바라보는 방향을 얻기 위해
+	UFUNCTION()
+	FVector GetCameraForwardVector();
 };
