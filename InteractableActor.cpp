@@ -151,9 +151,6 @@ void AInteractableActor::AttachedToPlayerSocket(float DeltaTime)
 			{ 
 				// 여기에서 Object의 위치를 플레이어의 소켓으로 이동하는 코드를 작성
 				this->AttachToComponent(PlayerDoll->PlayerHandSocket, FAttachmentTransformRules::SnapToTargetIncludingScale);
-				if (GEngine) {
-					GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Yellow, TEXT("쉬바 문 열린다"));
-				}
 				this->SetActorRelativeRotation(FRotator(0.0f, 0.0f, 0.0f));
 				
 				this->TextComponent->SetVisibility(false);
@@ -162,7 +159,7 @@ void AInteractableActor::AttachedToPlayerSocket(float DeltaTime)
 				// 플레리어와 충돌을 방지하기 위해 콜리전 해제
 				this->SetActorEnableCollision(false);
 				
-				// PlayerController를 가져옴, '0'은 플레이어의 지정 숫자를 이야기 함.
+				// PlayerController를 가져옴
 				PlayerDollController = Cast<APlayerDollController>(PlayerController);
 				
 				// Inventory에 넣는 과정 : 플레이어 컨트롤러의 멤버변수 PlayerInventory에 넣어줌.

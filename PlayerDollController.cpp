@@ -53,7 +53,7 @@ void APlayerDollController::SelectInventorySlot5()
 }
 
 
-// 손에 들고있는 물체를 변경하는 함수 : Object Pooling에 따라 물체는 모두 손에 잡고 있으며 선택 되었는지에 따라 보이게/안보이게 설정함.
+// 손에 들고있는 물체를 변경하는 함수 : 물체는 모두 손에 잡고 있으며 선택 되었는지에 따라 보이게/안보이게 설정함.
 void APlayerDollController::ChangeHandItem(int32 SlotNumber)
 {
 	// PlayerInventory의 Inventory array에 해당 index가 존재하는지 확인

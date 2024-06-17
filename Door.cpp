@@ -93,17 +93,8 @@ void ADoor::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherAct
 	if(Cast<APlayerDoll>(OtherActor)){
 		PlayerDoll = Cast<APlayerDoll>(OtherActor);
 	}
-	
-	if (PlayerDoll)
-	{
-		if(PlayerDoll->HasKey)
-		{
-			// Key가 문에 가까이 왔을 때, IsKeyOverlapped를 true
-			IsKeyOverlapped = true;
-			if (GEngine) {
-				GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Yellow, TEXT("Door in"));
-			}
-		}
+	if (GEngine) {
+		GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Yellow, TEXT("Door in"));
 	}
 }
 
@@ -111,8 +102,5 @@ void ADoor::OnOverlapEnd(UPrimitiveComponent* OverlappedComp, AActor* OtherActor
 {
     PlayerDoll = nullptr;
 	IsKeyOverlapped = false;
-	if (GEngine) {
-		GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Yellow, TEXT("Door out"));
-	}
 }
 
